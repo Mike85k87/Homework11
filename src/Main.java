@@ -39,28 +39,24 @@ public class Main {
         int clientOS = console.nextInt();
         return clientOS;
     }
+
     // Определяем версию приложения
     public static void selectingApplicationVersion(int clientDeviceYear, int clientOS) {
         int currentYear = LocalDate.now().getYear();
-        if (clientDeviceYear < currentYear) {
-            if (clientOS == 0) {
-                System.out.println("Установите облегченную версию приложения для iOS по ссылке");
-            } else {
-                System.out.println("Установите облегченную версию приложения для Android по ссылке");
-            }
+        if (clientDeviceYear < currentYear && clientOS == 0) {
+            System.out.println("Установите облегченную версию приложения для iOS по ссылке");
+        } else if (clientDeviceYear >= currentYear && clientOS == 0) {
+            System.out.println("Установите версию приложения для iOS по ссылке");
+        } else if (clientDeviceYear < currentYear && clientOS == 1) {
+            System.out.println("Установите облегченную версию приложения для Android по ссылке");
         } else {
-            if (clientDeviceYear >= currentYear) {
-                if (clientOS == 0) {
-                    System.out.println("Установите версию приложения для iOS по ссылке");
-                } else {
-                    System.out.println("Установите версию приложения для Android по ссылке");
-                }
-            }
+            System.out.println("Установите версию приложения для Android по ссылке");
         }
     }
 
+
     // Задача 3 Расчет дней доставки банковской карты
-    //Вводим расстоянме до клиента
+//Вводим расстоянме до клиента
     public static int deliveryDistance() {
         System.out.println("Введите величину расстояния доставки до вас в километрах");
         int deliveryDistance = console.nextInt();
@@ -68,19 +64,22 @@ public class Main {
     }
 
     // Создаем метод для решения задачи
-    public static void calculationOfDaysForDeliveryOfABankCard(int deliveryDistance) {
+    public static int calculationOfDaysForDeliveryOfABankCard(int deliveryDistance) {
+        int days;
         int day20km = 1;// Количество дней доставки при расстоянии до 20 км
         int day60km = 2;// Количество дней доставки при расстоянии от 20 до 60 км
         int day100km = 3;// Количество дней доставки при расстоянии от 60 до 100 км
+
         if (deliveryDistance <= 20) {
-            System.out.println("На доставку потребуется дней: " + day20km);
+            days = day20km;
         } else if (deliveryDistance > 20 && deliveryDistance <= 60) {
-            System.out.println("На доставку потребуется дней: " + day60km);
+            days = day60km;
         } else if (deliveryDistance > 60 && deliveryDistance <= 100) {
-            System.out.println("На доставку потребуется дней: " + day100km);
+            days = day100km;
         } else {
-            System.out.println("Доставки нет");
+            return -1;
         }
+        return days;
     }
 
     public static void main(String[] args) {
@@ -89,7 +88,12 @@ public class Main {
         // Решаем задачу 2 с помощью метода
         selectingApplicationVersion(enterYearOfManufactureOfDevice(), enterDeviceOperatingSystemValue());
         // Решаем задачу 3 с помощью метода
-        calculationOfDaysForDeliveryOfABankCard(deliveryDistance());
+        var days = calculationOfDaysForDeliveryOfABankCard(deliveryDistance());
+        if (days == -1) {
+            System.out.println("Доставки нет");
+        } else {
+            System.out.println("Количество дней: " + days);
+        }
     }
 
 
